@@ -36,9 +36,6 @@
         "nickname": "nickname",
         "Click to start recording":"Click to start recording",
         "send-image": "Photo",
-        "send-file": "File",
-        "send-video":"Video",
-        "you retracted a message":"you retracted a message",
-        "Copy":"Copy"
+        "send-file": "File"
     }
 }

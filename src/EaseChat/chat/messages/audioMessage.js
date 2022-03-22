@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AudioOrVideoMessage({ message, showByselfAvatar }) {
+function AudioMessage({ message, showByselfAvatar }) {
   let easeChatProps = useContext(EaseChatContext);
   const { onAvatarChange } = easeChatProps;
   const classes = useStyles({
@@ -107,23 +107,13 @@ function AudioOrVideoMessage({ message, showByselfAvatar }) {
       {showByselfAvatar && message.bySelf && <Avatar src={avatar}></Avatar>}
       <div className={classes.textBodyBox}>
         <span className={classes.userName}>{message.from}</span>
-        {message.type === "audio" ? (
-          <div className={classes.audioBox} onClick={play}>
-            <AudioPlayer play={isPlaying} reverse={message.bySelf} />
-            <span className={classes.duration}>
-              {Math.floor(message.body.length) + "''"}
-            </span>
-            <audio src={url} ref={audioRef} />
-          </div>
-        ) : (
-          <div>
-            <video
-              style={{width:'320px',borderRadius:'20px'}}
-              controls
-              src={message.url}
-            />
-          </div>
-        )}
+        <div className={classes.audioBox} onClick={play}>
+          <AudioPlayer play={isPlaying} reverse={message.bySelf} />
+          <span className={classes.duration}>
+            {Math.floor(message.body.length) + "''"}
+          </span>
+          <audio src={url} ref={audioRef} />
+        </div>
       </div>
 
       <div className={classes.time}>{renderTime(message.time)}</div>
@@ -131,4 +121,4 @@ function AudioOrVideoMessage({ message, showByselfAvatar }) {
   );
 }
 
-export default memo(AudioOrVideoMessage);
+export default memo(AudioMessage);
