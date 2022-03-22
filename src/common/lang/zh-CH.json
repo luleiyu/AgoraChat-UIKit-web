@@ -42,8 +42,6 @@
         "nickname": "昵称",
         "Click to start recording":"点击开始录音",
         "send-image": "图片",
-        "send-file": "文件",
-        "send-video":"视频",
-        "Copy":"复制"
+        "send-file": "文件"
     }
 }
