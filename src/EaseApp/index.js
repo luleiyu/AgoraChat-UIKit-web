@@ -45,19 +45,17 @@ const EaseApp = (props) => {
   const handleClickItem = useCallback(
     (session) => {
       props.onConversationClick && props.onConversationClick(session);
-      const { sessionType, sessionId } = session;
+      const { sessionType, sessionId, name } = session;
       if (!session.lastMessage) {
         dispatch(MessageActions.fetchMessage(sessionId, sessionType));
       }
-      WebIM.conn.getPresenceStatus({usernames: [sessionId]}).then(res => {
-        dispatch(
-          GlobalPropsActions.setGlobalProps({
-            to: sessionId,
-            chatType: sessionType,
-            presenceExt: res.result[0].ext
-          })
-        );
-      });
+      dispatch(
+        GlobalPropsActions.setGlobalProps({
+          to: sessionId,
+          chatType: sessionType,
+          name: name,
+        })
+      );
       dispatch(SessionActions.setCurrentSession(sessionId));
       dispatch(MessageActions.clearUnreadAsync(sessionType, sessionId));
     },
@@ -175,6 +173,9 @@ EaseAppProvider.propTypes = {
   menuList: PropTypes.array,
   handleMenuItem: PropTypes.func,
   onChatAvatarClick:PropTypes.func,
+
+  customMessageList:PropTypes.array,
+  customMessageClick:PropTypes.func
 };
 EaseAppProvider.defaultProps = {
   isShowUnread: true,

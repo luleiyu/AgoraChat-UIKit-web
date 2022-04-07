@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import MessageList from "./messageList";
 import MessageBar from "./messageBar/index";
-import { useSelector } from "../../EaseApp/index";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import SendBox from "./sendBox";
 import WebIM, { initIMSDK } from "../../utils/WebIM";
 import store from "../../redux/index";
@@ -119,6 +118,9 @@ EaseChatProvider.propTypes = {
   successLoginCallback:PropTypes.func,
   failCallback:PropTypes.func,
   onChatAvatarClick:PropTypes.func,
+  
+  customMessageList:PropTypes.array,
+  customMessageClick:PropTypes.func
 };
 
 EaseChatProvider.defaultProps = {
