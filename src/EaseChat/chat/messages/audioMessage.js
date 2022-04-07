@@ -166,4 +166,4 @@ function AudioOrVideoMessage({ message, showByselfAvatar }) {
   );
 }
 
-export default memo(AudioOrVideoMessage);
+export default memo(AudioMessage);

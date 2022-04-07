@@ -1,4 +1,4 @@
-import React, { memo, useState, useContext, useEffect } from "react";
+import React, { memo, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/styles";
 import i18next from "i18next";
 import { Menu, MenuItem } from "@material-ui/core";
@@ -7,7 +7,6 @@ import { emoji } from "../../../common/emoji";
 import { renderTime } from "../../../utils";
 
 import MessageStatus from "./messageStatus";
-import {CopyToClipboard} from 'react-copy-to-clipboard'
 
 import { EaseChatContext } from "../index";
 const useStyles = makeStyles((theme) => ({
@@ -86,22 +85,16 @@ function TextMessage({ message, onRecallMessage, showByselfAvatar }) {
     bySelf: message.bySelf,
     chatType: message.chatType,
   });
-  const [menuState, setMenuState] = useState(initialState);
-  const [copyMsgVal,setCopyMsgVal] = useState('');
-
-  useEffect(()=>{
-    setCopyMsgVal(message.msg)
-  },[copyMsgVal])
-  
+  const [state, setState] = useState(initialState);
   const handleClick = (event) => {
     event.preventDefault();
-    setMenuState({
+    setState({
       mouseX: event.clientX - 2,
       mouseY: event.clientY - 4,
     });
   };
   const handleClose = () => {
-    setMenuState(initialState);
+    setState(initialState);
   };
   const recallMessage = () => {
     onRecallMessage(message);
@@ -185,14 +178,15 @@ function TextMessage({ message, onRecallMessage, showByselfAvatar }) {
         <div className={classes.read}>{i18next.t("Read")}</div>
       ) : null}
 
+      {message.bySelf ? (
         <Menu
           keepMounted
-          open={menuState.mouseY !== null}
+          open={state.mouseY !== null}
           onClose={handleClose}
           anchorReference="anchorPosition"
           anchorPosition={
-            menuState.mouseY !== null && menuState.mouseX !== null
-              ? { top: menuState.mouseY, left: menuState.mouseX }
+            state.mouseY !== null && state.mouseX !== null
+              ? { top: state.mouseY, left: state.mouseX }
               : undefined
           }
         >
@@ -206,6 +200,7 @@ function TextMessage({ message, onRecallMessage, showByselfAvatar }) {
             return <MenuItem key={key} onClick={_customMessageClick(val,message)}>{val.name}</MenuItem>
           })}
         </Menu>
+      ) : null}
     </li>
   );
 }
