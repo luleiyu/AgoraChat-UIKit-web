@@ -197,8 +197,13 @@ function SendBox(props) {
     handlefocus(v)
     setSessionEl(null);
   };
-  EaseAppProvider.handleThirdEmoji = handleImageChange
-  EaseChatProvider.handleThirdEmoji = handleImageChange
+  const handleThirdEmoji = (e) => {
+    dispatch(MessageActions.setCustomMessage(to, chatType, {
+      msg: e,
+    }));
+  }
+  EaseAppProvider.handleThirdEmoji = handleThirdEmoji
+  EaseChatProvider.handleThirdEmoji = handleThirdEmoji
   /*------------ ui-menu ----------*/
   const renderMenu = () => {
     return (

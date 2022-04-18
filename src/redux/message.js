@@ -306,6 +306,31 @@ const { Types, Creators } = createActions({
             WebIM.utils.download.call(WebIM.conn, options)
         }
     },
+
+    setCustomMessage: (to, chatType, message = {}) => {
+        if (!to || !chatType) return
+        return (dispatch, getState) => {
+            const formatMsg = formatLocalMessage(to, chatType, message, 'custom')
+            const { body, id } = formatMsg
+            const { msg } = body
+            const msgObj = new WebIM.message('custom', id)
+            msgObj.set({
+                to,
+                msg,
+                chatType,
+                ext: message.ext,
+                success: () => {
+                    dispatch(Creators.updateMessageStatus(formatMsg, 'sent'))
+                },
+                fail: (e) => {
+                    console.error("Send private text error", e);
+                    dispatch(Creators.updateMessageStatus(formatMsg, 'fail'))
+                }
+            })
+            WebIM.conn.send(msgObj.body)
+            dispatch(Creators.addMessage(formatMsg))
+        }
+    }
 })
 
 /* ------------- Reducers ------------- */
