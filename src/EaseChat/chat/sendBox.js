@@ -21,7 +21,8 @@ import MessageActions from "../../redux/message";
 import PropTypes from "prop-types";
 import i18next from "i18next";
 import WebIM from "../../utils/WebIM";
-import { EaseChatContext } from "./index";
+import EaseChatProvider, { EaseChatContext } from "./index";
+import EaseAppProvider from '../../EaseApp/index'
 
 import Recorder from "./messages/recorder";
 import icon_emoji from "../../common/icons/emoji@2x.png";
@@ -75,7 +76,8 @@ const useStyles = makeStyles((theme) => ({
 
 function SendBox(props) {
   let easeChatProps = useContext(EaseChatContext);
-  const { easeInputMenu,menuList,handleMenuItem } = easeChatProps;
+  console.log(easeChatProps, 'easeChatProps')
+  const { easeInputMenu,menuList,handleMenuItem,thridPartyEmoji } = easeChatProps;
   const dispatch = useDispatch();
   const classes = useStyles();
   const globalProps = useSelector((state) => state.global.globalProps);
@@ -195,7 +197,8 @@ function SendBox(props) {
     handlefocus(v)
     setSessionEl(null);
   };
-
+  EaseAppProvider.handleThirdEmoji = handleImageChange
+  EaseChatProvider.handleThirdEmoji = handleImageChange
   /*------------ ui-menu ----------*/
   const renderMenu = () => {
     return (
@@ -313,7 +316,13 @@ function SendBox(props) {
       </>
     );
   };
-
+  const renderThridPartyEmoji = () => {
+    return(
+      <>
+        { thridPartyEmoji }
+      </>
+    )
+  }
   const renderConditionModule = () => {
     switch (easeInputMenu) {
       case "all":
@@ -322,6 +331,7 @@ function SendBox(props) {
             {renderRecorder()}
             {renderTextarea()}
             {renderEmoji()}
+            {renderThridPartyEmoji()}
             {renderMoreFeatures()}
           </>
         );
@@ -330,6 +340,7 @@ function SendBox(props) {
           <>
             {renderTextarea()}
             {renderEmoji()}
+            {renderThridPartyEmoji()}
             {renderMoreFeatures()}
           </>
         );
