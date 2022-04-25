@@ -190,7 +190,8 @@ EaseAppProvider.propTypes = {
   menuList: PropTypes.array,
   handleMenuItem: PropTypes.func,
   onChatAvatarClick:PropTypes.func,
-  thridPartyEmoji: PropTypes.node,
+  thridPartyStickets: PropTypes.node,
+  thridPartyGifs: PropTypes.node,
 };
 EaseAppProvider.defaultProps = {
   isShowUnread: true,

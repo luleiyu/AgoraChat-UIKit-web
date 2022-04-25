@@ -11,8 +11,12 @@ export default function createlistener(props) {
     onConnected: (msg) => {
         // init DB
         AppDB.init(WebIM.conn.context.userId);
-      // get session list
-      store.dispatch(SessionActions.getSessionList(WebIM.conn.context.userId));
+      if (props.chatRoom) {
+        store.dispatch(SessionActions.onGetChatroomUserList())
+      } else {
+        // get session list
+        store.dispatch(SessionActions.getSessionList(WebIM.conn.context.userId));
+      }
       const options = {
         appKey:WebIM.conn.context.appKey,
         username:WebIM.conn.context.userId

@@ -59,7 +59,10 @@ export default class Demo extends Component {
             appkey= "41117440#383391"
             username="test003"
             agoraToken="007eJxTYDiw2fuKzNWjLzknllxuMkl+z+OTa5dxRZPB6fP1VGlGX1sFhjTDlGRzc4uklJRkMxOzxBSLNCMzA0tzs+REoxQDQ9NkPSnjJAUZBgbT1MfvGBlYGRiBEMRXYTBPsTAyMzc10LVMSjTVNTRMTda1NDdP1U0xT7Y0M0oztjC1NAMA7zUk8Q=="
-            header={<div style={{ height: "100px" }}>TestHeader</div>} />
+            header={<div style={{ height: "100px" }}>TestHeader</div>}
+            thridPartyStickets={<div style={{height: '100px', width: '100%'}}>这里是ticket</div>}
+            thridPartyGifs={<div style={{height: '1000px', width: '100%'}}>这里是gif</div>}
+          />
         </div>
 
       

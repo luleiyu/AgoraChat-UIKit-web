@@ -119,7 +119,8 @@ EaseChatProvider.propTypes = {
   successLoginCallback:PropTypes.func,
   failCallback:PropTypes.func,
   onChatAvatarClick:PropTypes.func,
-  thridPartyEmoji: PropTypes.node,
+  thridPartyStickets: PropTypes.node,
+  thridPartyGifs: PropTypes.node,
 };
 
 EaseChatProvider.defaultProps = {

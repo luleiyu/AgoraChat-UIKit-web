@@ -14,6 +14,7 @@ import {
   MenuItem,
   TextareaAutosize,
   Menu,
+  Popover
 } from "@material-ui/core";
 import Emoji from "./toolbars/emoji";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,6 +29,8 @@ import Recorder from "./messages/recorder";
 import icon_emoji from "../../common/icons/emoji@2x.png";
 import icon_yuyin from "../../common/icons/voice@2x.png";
 import attachment from "../../common/icons/attachment@2x.png";
+import gifsImg from "../../common/images/GIFs@2x.png"
+import stickersImg from "../../common/images/stickers@2x.png";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -72,12 +75,50 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "5px",
     display: "flex",
   },
+  emojiBox: {
+    position: 'relative',
+  },
+  thirdEmojiBox: {
+    width: '390px',
+    minHeight: '332px',
+    background: 'rgba(255, 255, 255, 1)',
+    boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.12), 0px 4px 24px rgba(0, 0, 0, 0.08)',
+    borderRadius: '16px',
+    maxHeight: '850px',
+  },
+  tabaBox: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: '44px',
+    background: 'rgba(0, 0, 0, 0.02)',
+  },
+  tabItem: {
+    borderRadius: '16px',
+    height: '32px',
+    width: '104px',
+    textAlign: 'center',
+    paddingTop: '3px',
+    boxSizing: 'border-box',
+    cursor: 'pointer',
+  },
+  tabItemBgc: {
+    backdropFilter: 'blur(27.1828px)',
+    background: 'rgba(216, 216, 216, 0.4)',
+  },
+  sendBoxPopover: {
+    '& .MuiPopover-paper': {
+      borderRadius: '16px',
+      overflowX: 'visible',
+      overflowY: 'visible',
+    }
+  }
 }));
 
 function SendBox(props) {
   let easeChatProps = useContext(EaseChatContext);
   console.log(easeChatProps, 'easeChatProps')
-  const { easeInputMenu,menuList,handleMenuItem,thridPartyEmoji } = easeChatProps;
+  const { easeInputMenu,menuList,handleMenuItem,thridPartyStickets,thridPartyGifs } = easeChatProps;
   const dispatch = useDispatch();
   const classes = useStyles();
   const globalProps = useSelector((state) => state.global.globalProps);
@@ -85,6 +126,7 @@ function SendBox(props) {
   const emojiRef = useRef(null);
   const fileEl = useRef(null);
   const videoEl = useRef(null)
+  const thirdEmojiRef = useRef(null)
   const [emojiVisible, setEmojiVisible] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
@@ -92,16 +134,54 @@ function SendBox(props) {
   const imageEl = useRef(null);
   const [sessionEl, setSessionEl] = useState(null);
   const [showRecorder, setShowRecorder] = useState(false);
+  const [showStickets, setShowStickets] = useState(false);
+  const [showGifs, setShowGifs] = useState(false);
+  const [showThirdEmoji, setshowThirdEmoji] = useState(null);
+  const [whoClick, setWhoClick] = useState('click');
   inputValueRef.current = inputValue;
-  const handleClickEmoji = (e) => {
-    setEmojiVisible(e.currentTarget);
+  const handleClickEmoji = (e, num) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (num === 0) {
+      setEmojiVisible(e.currentTarget)
+      setShowStickets(false)
+      setShowGifs(false)
+    } else if (num === 1) {
+      setShowStickets(true)
+      setShowGifs(false)
+      setEmojiVisible(false)
+    } else if (num === 2) {
+      setShowGifs(true)
+      setShowStickets(false)
+      setEmojiVisible(false)
+    } else if (num === 3) {
+      if (showThirdEmoji) {
+        setshowThirdEmoji(null)
+      } else {
+        setshowThirdEmoji(e.currentTarget)
+      }
+      setEmojiVisible(true)
+      setShowStickets(false)
+      setShowGifs(false)
+    }
   };
+  const handleThirdEmojiClose = () => {
+    setshowThirdEmoji(null)
+    setTimeout(() => {
+      let el = inputRef.current;
+      el.focus();
+      el.selectionStart = inputValueRef.current.length;
+      el.selectionEnd = inputValueRef.current.length;
+    }, 0);
+  }
   const handleEmojiClose = () => {
     setEmojiVisible(null);
   };
-  const handleEmojiSelected = (emoji) => {
+  const handleEmojiSelected = (emoji, num) => {
     if (!emoji) return;
-    setEmojiVisible(null);
+    if (!num) {
+      setEmojiVisible(null);
+    }
     setInputValue((value) => value + emoji);
     setTimeout(() => {
       let el = inputRef.current;
@@ -174,6 +254,7 @@ function SendBox(props) {
   };
 
   const handleVideoChange = (e) => {
+    console.log(e, 'handleVideoChange')
     let file = WebIM.utils.getFileUrl(e.target);
     if (!file.filename) {
       return false;
@@ -181,6 +262,7 @@ function SendBox(props) {
     dispatch(MessageActions.sendVideoMessage(to, chatType, file,videoEl));
   }
   const handleImageChange = (e) => {
+    console.log(e, 'handleImageChange')
     let file = WebIM.utils.getFileUrl(e.target);
     if (!file.filename) {
       return false;
@@ -198,12 +280,12 @@ function SendBox(props) {
     setSessionEl(null);
   };
   const handleThirdEmoji = (e) => {
-    dispatch(MessageActions.setCustomMessage(to, chatType, {
-      msg: e,
-    }));
+    if (!e) return;
+    dispatch(MessageActions.setCustomMessage(to, chatType, e))
   }
   EaseAppProvider.handleThirdEmoji = handleThirdEmoji
   EaseChatProvider.handleThirdEmoji = handleThirdEmoji
+
   /*------------ ui-menu ----------*/
   const renderMenu = () => {
     return (
@@ -299,7 +381,7 @@ function SendBox(props) {
   const renderEmoji = () => {
     return (
       <>
-        <IconButton ref={emojiRef} onClick={handleClickEmoji}>
+        <IconButton ref={emojiRef} onClick={(e) => handleClickEmoji(e, 0)}>
           <img alt="" className={classes.iconStyle} src={icon_emoji} />
         </IconButton>
         <Emoji
@@ -321,11 +403,68 @@ function SendBox(props) {
       </>
     );
   };
+
   const renderThridPartyEmoji = () => {
     return(
-      <>
-        { thridPartyEmoji }
-      </>
+      <div className={classes.emojiBox}>
+        <IconButton ref={emojiRef} onClick={(e) => handleClickEmoji(e, 3)}>
+          <img alt="" className={classes.iconStyle} src={icon_emoji} />
+        </IconButton>
+        {
+          <Popover
+            className={classes.sendBoxPopover}
+            keepMounted
+            open={Boolean(showThirdEmoji)}
+            onClose={handleThirdEmojiClose}
+            anchorEl={showThirdEmoji}
+            style={{ maxHeight: '850px' }}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+            }}
+            transformOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }}
+          >
+            <div className={classes.thirdEmojiBox}>
+              <div className={classes.tabaBox}>
+                <div className={`${classes.tabItem} ${emojiVisible ? classes.tabItemBgc : ''}`} onClick={(e) => handleClickEmoji(e, 0)}>
+                  <img alt="" className={classes.iconStyle} src={icon_emoji} />
+                </div>
+                {
+                  thridPartyStickets ?
+                  <div className={`${classes.tabItem} ${showStickets ?  classes.tabItemBgc : ''}`} onClick={(e) => handleClickEmoji(e, 1)}>
+                    <img alt="" className={classes.iconStyle} src={stickersImg} />
+                  </div>
+                  : null
+                }
+                {
+                  thridPartyGifs ?
+                  <div className={`${classes.tabItem} ${showGifs ? classes.tabItemBgc : ''}`} onClick={(e) => handleClickEmoji(e, 2)}>
+                    <img alt="" className={classes.iconStyle} src={gifsImg} />
+                  </div>
+                  : null
+                }
+              </div>
+              <div>
+                {
+                  emojiVisible ?
+                  <Emoji
+                    anchorEl={emojiVisible}
+                    onSelected={(e) => handleEmojiSelected(e, 1)}
+                    onClose={handleEmojiClose}
+                    thirdEmoji={true}
+                  ></Emoji>
+                  : null
+                }
+                { showStickets ? thridPartyStickets : null }
+                { showGifs ? thridPartyGifs : null }
+              </div>
+            </div>
+          </Popover>
+        }
+      </div>
     )
   }
   const renderConditionModule = () => {
@@ -335,8 +474,7 @@ function SendBox(props) {
           <>
             {renderRecorder()}
             {renderTextarea()}
-            {renderEmoji()}
-            {renderThridPartyEmoji()}
+            {thridPartyStickets || thridPartyGifs ? renderThridPartyEmoji() : renderEmoji()}
             {renderMoreFeatures()}
           </>
         );
@@ -344,8 +482,7 @@ function SendBox(props) {
         return (
           <>
             {renderTextarea()}
-            {renderEmoji()}
-            {renderThridPartyEmoji()}
+            {thridPartyStickets || thridPartyGifs ? renderThridPartyEmoji() : renderEmoji()}
             {renderMoreFeatures()}
           </>
         );

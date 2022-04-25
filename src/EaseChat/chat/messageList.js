@@ -10,6 +10,7 @@ import FileMessage from "./messages/fileMessage";
 import ImgMessage from "./messages/imageMessage";
 import AudioOrVideoMessage from "./messages/audioOrVideoMessage";
 import TextMessage from "./messages/textMessage";
+import ThirdEmoji from "./messages/thirdEmoji";
 import i18next from "i18next";
 
 const useStyles = makeStyles((theme) => ({
@@ -120,6 +121,15 @@ function MessageList({ messageList, showByselfAvatar }) {
                   return (
                     <RetractedMessage message={msg} key={msg.id + index}/>
                   );
+                } else if (msg.body.type === "custom") {
+                  return (
+                    <ThirdEmoji
+                      message={msg}
+                      key={msg.id + index}
+                      onRecallMessage={handleRecallMsg}
+                      showByselfAvatar={showByselfAvatar}
+                    />
+                  )
                 } else {
                   return null;
                 }
