@@ -107,29 +107,31 @@ function MessageList({ messageList, showByselfAvatar }) {
                     />
                   );
                 } else if (msg.body.type === "img") {
-                  return (
-                    <ImgMessage
-                      message={msg}
-                      key={msg.id + index}
-                      onRecallMessage={handleRecallMsg}
-                      showByselfAvatar={showByselfAvatar}
-                    />
-                  );
+                  if (msg.body.identity === "thirdEmoji") {
+                    return (
+                      <ThirdEmoji
+                        message={msg}
+                        key={msg.id + index}
+                        onRecallMessage={handleRecallMsg}
+                        showByselfAvatar={showByselfAvatar}
+                      />
+                    )
+                  } else {
+                    return (
+                      <ImgMessage
+                        message={msg}
+                        key={msg.id + index}
+                        onRecallMessage={handleRecallMsg}
+                        showByselfAvatar={showByselfAvatar}
+                      />
+                    );
+                  }
                 } else if (msg.body.type === "audio" || msg.body.type === "video") {
                   return <AudioOrVideoMessage message={msg} key={msg.id + index} showByselfAvatar={showByselfAvatar}/>;
                 } else if (msg.body.type === "recall") {
                   return (
                     <RetractedMessage message={msg} key={msg.id + index}/>
                   );
-                } else if (msg.body.type === "custom") {
-                  return (
-                    <ThirdEmoji
-                      message={msg}
-                      key={msg.id + index}
-                      onRecallMessage={handleRecallMsg}
-                      showByselfAvatar={showByselfAvatar}
-                    />
-                  )
                 } else {
                   return null;
                 }

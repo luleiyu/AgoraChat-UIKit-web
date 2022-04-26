@@ -82,7 +82,8 @@ const initialState = {
   mouseX: null,
   mouseY: null,
 };
-function TextMessage({ message, onRecallMessage, showByselfAvatar }) {
+function ThirdEmoji({ message, onRecallMessage, showByselfAvatar }) {
+  console.log(message, 'ThirdEmoji')
   let easeChatProps = useContext(EaseChatContext);
   const { onAvatarChange } = easeChatProps;
   const classes = useStyles({
@@ -109,40 +110,6 @@ function TextMessage({ message, onRecallMessage, showByselfAvatar }) {
   const recallMessage = () => {
     onRecallMessage(message);
     handleClose();
-  };
-  const renderTxt = (txt) => {
-    if (txt === undefined) {
-      return [];
-    }
-    let rnTxt = [];
-    let match = null;
-    const regex = /(\[.*?\])/g;
-    let start = 0;
-    let index = 0;
-    while ((match = regex.exec(txt))) {
-      index = match.index;
-      if (index > start) {
-        rnTxt.push(txt.substring(start, index));
-      }
-      if (match[1] in emoji.map) {
-        const v = emoji.map[match[1]];
-        rnTxt.push(
-          <img
-            key={v}
-            alt={v}
-            src={require(`../../../common/faces/${v}`).default}
-            width={20}
-            height={20}
-          />
-        );
-      } else {
-        rnTxt.push(match[1]);
-      }
-      start = index + match[1].length;
-    }
-    rnTxt.push(txt.substring(start, txt.length));
-
-    return rnTxt;
   };
 
   const changeCopyVal = () => {
@@ -224,4 +191,4 @@ function TextMessage({ message, onRecallMessage, showByselfAvatar }) {
   );
 }
 
-export default memo(TextMessage);
+export default memo(ThirdEmoji);

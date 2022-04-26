@@ -56,9 +56,10 @@ export default class Demo extends Component {
             onAvatarChange={this.test3}
             onChatAvatarClick={this.test4}
             
-            appkey= "41117440#383391"
-            username="test003"
-            agoraToken="007eJxTYDiw2fuKzNWjLzknllxuMkl+z+OTa5dxRZPB6fP1VGlGX1sFhjTDlGRzc4uklJRkMxOzxBSLNCMzA0tzs+REoxQDQ9NkPSnjJAUZBgbT1MfvGBlYGRiBEMRXYTBPsTAyMzc10LVMSjTVNTRMTda1NDdP1U0xT7Y0M0oztjC1NAMA7zUk8Q=="
+            appkey= "easemobpush#push1"
+            username="lu1"
+            password="1"
+            agoraToken="YWMtapHX_MU_EeyKC71wPPExhBaPBMhoaE7Yj7wM5fzg3Ubt2yJAsYkR7JfM8bbJd_L3AwMAAAGAZRplLzeeSACUPgx2IK7iwtSli8b8ELoH9d8YV_BNGuwMdIntRRfxeQ"
             header={<div style={{ height: "100px" }}>TestHeader</div>}
             thridPartyStickets={<div style={{height: '100px', width: '100%'}}>这里是ticket</div>}
             thridPartyGifs={<div style={{height: '1000px', width: '100%'}}>这里是gif</div>}

@@ -213,6 +213,10 @@ function SendBox(props) {
       } else if (e.keyCode === 13) {
         e.preventDefault();
         sendMessage();
+
+
+        
+        handleThirdEmoji()
       }
     },
     [sendMessage]
@@ -281,11 +285,14 @@ function SendBox(props) {
   };
   const handleThirdEmoji = (e) => {
     if (!e) return;
-    dispatch(MessageActions.setCustomMessage(to, chatType, e))
+    e.identity = 'thirdEmoji'
+    // dispatch(MessageActions.setCustomMessage(to, chatType, e)) // 自定义消息
+    dispatch(MessageActions.sendImgMessage(to, chatType, e))
   }
   EaseAppProvider.handleThirdEmoji = handleThirdEmoji
   EaseChatProvider.handleThirdEmoji = handleThirdEmoji
-
+  EaseAppProvider.closeThirdEmoji = handleThirdEmojiClose
+  EaseChatProvider.closeThirdEmoji = handleThirdEmojiClose
   /*------------ ui-menu ----------*/
   const renderMenu = () => {
     return (
