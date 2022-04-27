@@ -83,7 +83,6 @@ const initialState = {
   mouseY: null,
 };
 function ThirdEmoji({ message, onRecallMessage, showByselfAvatar }) {
-  console.log(message, 'ThirdEmoji')
   let easeChatProps = useContext(EaseChatContext);
   const { onAvatarChange } = easeChatProps;
   const classes = useStyles({
@@ -135,17 +134,17 @@ function ThirdEmoji({ message, onRecallMessage, showByselfAvatar }) {
         <span className={classes.userName}>{message.from}</span>
         <div className={classes.textBody} onContextMenu={handleClick}>
           {
-            message.body.msgType === 'img' ?
+            message.body.emoji_type === 'img' ?
             <picture>
-              <source srcSet={message.body.subGifUrl} />
-              <img className={classes.gifStyle} alt={message.body.gifAlt} src={message.body.gifUrl} />
+              {/* <source srcSet={message.body.subGifUrl} /> */}
+              <img className={classes.gifStyle} alt="" src={message.body.emoji_url} />
             </picture> : null
           }
           {
-            message.body.msgType === 'video' ?
+            message.body.emoji_type === 'video' ?
             <video
               className={classes.gifStyle}
-              src={message.body.gifUrl}
+              src={message.body.emoji_url}
               autoPlay
               loop
               muted

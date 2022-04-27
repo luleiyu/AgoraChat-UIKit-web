@@ -114,12 +114,10 @@ const { Types, Creators } = createActions({
             const msgObj = new WebIM.message('img', id)
             msgObj.set({
                 ext: {
-                    file_length: file.identity !== 'thirdEmoji' && file.data.size,
-                    file_type: file.identity !== 'thirdEmoji' && file.data.type,
-                    gifUrl: file.identity === 'thirdEmoji' && file.gifUrl,
-                    subGifUrl: file.identity === 'thirdEmoji' && file.subGifUrl,
-                    gifAlt: file.identity === 'thirdEmoji' && file.gifAlt,
-                    msgType: file.identity === 'thirdEmoji' && file.msgType
+                    file_length: file.identity !== 'thirdEmoji' ? file.data.size : null,
+                    file_type: file.identity !== 'thirdEmoji' ? file.data.type : null,
+                    emoji_url: file.identity === 'thirdEmoji' && file.emoji_url,
+                    emoji_type: file.identity === 'thirdEmoji' && file.emoji_type
                 },
                 file: file,
                 to,
