@@ -2,7 +2,7 @@ import React, { memo, useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import i18next from "i18next";
 import { Menu, MenuItem } from "@material-ui/core";
-import avatar from "../../../common/icons/avatar1.png";
+import avatar from "../../../common/images/avatar_another_style.png";
 import { emoji } from "../../../common/emoji";
 import { renderTime } from "../../../utils";
 
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "14px",
     background: (props) =>
       props.bySelf
-        ? "linear-gradient(124deg, #c913df 20%,#154DFE 90%)"
+        ? "#7F91A8"
         : "#F2F2F2",
     color: (props) => (props.bySelf ? "#fff" : "#000"),
     border: "1px solid #fff",

@@ -10,7 +10,7 @@ import _ from 'lodash'
 import SessionItem from './sessionItem';
 
 import groupIcon from "../../common/images/groupAvatar.png";
-import chatRoomIcon from "../../common/images/chatroom@2x.png";
+import chatRoomIcon from "../../common/images/group_another_style.png";
 import noticeIcon from "../../common/images/notice@2x.png";
 import avatarIcon1 from '../../common/images/avatar1.png'
 import avatarIcon2 from '../../common/images/avatar2.png'
@@ -174,7 +174,7 @@ export default function SessionList(props) {
             let findIndex =  _.find(usersInfoData, { username: session.sessionId }) || ''
             avatarSrc = userAvatars[findIndex.userAvatar] || avatarIcon1
           }else if (session.sessionType === "groupChat") {
-            avatarSrc = groupIcon;
+            avatarSrc = chatRoomIcon;
           } else if (session.sessionType === "chatRoom") {
             avatarSrc = chatRoomIcon;
           } else if (session.sessionType === "notice") {

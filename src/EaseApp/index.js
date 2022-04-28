@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   grid: {
-    backgroundColor: "rgba(206, 211, 217, 0.3)",
+    backgroundColor: "rgb(237, 239, 242)",
     width:'360px'
   },
 }));
