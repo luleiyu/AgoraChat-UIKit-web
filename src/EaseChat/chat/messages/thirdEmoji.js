@@ -134,17 +134,17 @@ function ThirdEmoji({ message, onRecallMessage, showByselfAvatar }) {
         <span className={classes.userName}>{message.from}</span>
         <div className={classes.textBody} onContextMenu={handleClick}>
           {
-            message.body.emoji_type !== 'video' ?
+            message.ext.emoji_type !== 'video' ?
             <picture>
-              {/* <source srcSet={message.body.subGifUrl} /> */}
-              <img className={classes.gifStyle} alt="" src={message.body.emoji_url} />
+              {/* <source srcSet={message.ext.subGifUrl} /> */}
+              <img className={classes.gifStyle} alt="" src={message.ext.emoji_url} />
             </picture> : null
           }
           {
-            message.body.emoji_type === 'video' ?
+            message.ext.emoji_type === 'video' ?
             <video
               className={classes.gifStyle}
-              src={message.body.emoji_url}
+              src={message.ext.emoji_url}
               autoPlay
               loop
               muted

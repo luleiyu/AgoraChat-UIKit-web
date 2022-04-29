@@ -117,7 +117,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SendBox(props) {
   let easeChatProps = useContext(EaseChatContext);
-  console.log(easeChatProps, 'easeChatProps')
+  // console.log(easeChatProps, 'easeChatProps')
   const { easeInputMenu,menuList,handleMenuItem,thridPartyStickets,thridPartyGifs } = easeChatProps;
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -285,9 +285,13 @@ function SendBox(props) {
   };
   const handleThirdEmoji = (e) => {
     if (!e) return;
-    e.identity = 'thirdEmoji'
+    const param = {
+      ext: {
+        ...e
+      }
+    }
     // dispatch(MessageActions.setCustomMessage(to, chatType, e)) // 自定义消息
-    dispatch(MessageActions.sendImgMessage(to, chatType, e))
+    dispatch(MessageActions.sendImgMessage(to, chatType, param))
   }
   EaseAppProvider.handleThirdEmoji = handleThirdEmoji
   EaseChatProvider.handleThirdEmoji = handleThirdEmoji

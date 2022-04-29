@@ -107,7 +107,7 @@ function MessageList({ messageList, showByselfAvatar }) {
                     />
                   );
                 } else if (msg.body.type === "img") {
-                  if (msg.body.identity === "thirdEmoji") {
+                  if (msg.ext.emoji_type) {
                     return (
                       <ThirdEmoji
                         message={msg}

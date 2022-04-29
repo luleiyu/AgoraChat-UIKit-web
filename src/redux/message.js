@@ -104,20 +104,24 @@ const { Types, Creators } = createActions({
     },
 
     sendImgMessage: (to, chatType, file,imageEl) => {
+        console.log(file, 'sendImgMessage')
         return (dispatch, getState) => {
-            if (file.identity !== 'thirdEmoji' && file.data.size > (1024 * 1024 * 10)) {
-                message.error(i18next.t('The file exceeds the upper limit'))
-                return
+            if (!file?.ext?.emoji_url) {
+                if (file.data.size > (1024 * 1024 * 10)) {
+                    message.error(i18next.t('The file exceeds the upper limit'))
+                    return
+                }
             }
             const formatMsg = formatLocalMessage(to, chatType, file, 'img')
+            console.log(formatMsg, 'formatMsg')
             const { id } = formatMsg
             const msgObj = new WebIM.message('img', id)
             msgObj.set({
                 ext: {
-                    file_length: file.identity !== 'thirdEmoji' ? file.data.size : null,
-                    file_type: file.identity !== 'thirdEmoji' ? file.data.type : null,
-                    emoji_url: file.identity === 'thirdEmoji' && file.emoji_url,
-                    emoji_type: file.identity === 'thirdEmoji' && file.emoji_type
+                    file_length: !file?.ext?.emoji_url ? file.data.size : null,
+                    file_type: !file?.ext?.emoji_url ? file.data.type : null,
+                    emoji_url: file?.ext?.emoji_url ? file.ext.emoji_url : null,
+                    emoji_type: file?.ext?.emoji_url ? file.ext.emoji_type : null
                 },
                 file: file,
                 to,
@@ -125,7 +129,7 @@ const { Types, Creators } = createActions({
                 onFileUploadError: function (error) {
                     formatMsg.status = 'fail'
                     dispatch(Creators.updateMessageStatus(formatMsg, 'fail'))
-                    if (file.identity !== 'thirdEmoji') {
+                    if (!file?.ext?.emoji_url) {
                         imageEl.current.value = ''
                     }
                 },
@@ -136,17 +140,18 @@ const { Types, Creators } = createActions({
                     formatMsg.status = 'sent'
                     dispatch(Creators.updateMessages(chatType, to, formatMsg ))
                     dispatch(Creators.updateMessageStatus(formatMsg, 'sent'))
-                    if (file.identity !== 'thirdEmoji') {
+                    if (!file?.ext?.emoji_url) {
                         imageEl.current.value = ''
                     }
                 },
                 fail: function () {
                     dispatch(Creators.updateMessageStatus(formatMsg, 'fail'))
-                    if (file.identity !== 'thirdEmoji') {
+                    if (!file?.ext?.emoji_url) {
                         imageEl.current.value = ''
                     }
                 },
             })
+            console.log(msgObj)
             WebIM.conn.send(msgObj.body)
             dispatch(Creators.addMessage(formatMsg, 'img'))
         }

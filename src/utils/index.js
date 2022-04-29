@@ -35,98 +35,104 @@ export function getToken() {
 export function getUserName() {
     return username
 }
-
-const msgTpl = {
-    base: {
-        error: false,
-        errorCode: '',
-        errorText: '',
-        // if status is blank, it's treated as "sent" from server side
-        status: 'sending', // [sending, sent ,fail, read]
-        id: '',
-        // from - room id need it,should not be deleted
-        from: '',
-        to: '',
-        toJid: '',
-        time: '',
-        chatType: '', // chat / groupchat
-        body: {},
-        ext: {},
-        bySelf: false
-    },
-    txt: {
-        type: 'txt',
-        msg: ''
-    },
-    img: {
-        type: 'img',
-        file_length: 0,
-        filename: '',
-        filetype: '',
-        length: 0,
-        secret: '',
-        width: 0,
-        height: 0,
-        url: '',
-        thumb: '',
-        thumb_secret: ''
-    },
-    file: {
-        type: 'file',
-        file_length: 0,
-        filename: '',
-        filetype: '',
-        length: 0,
-        secret: '',
-        width: 0,
-        height: 0,
-        url: '',
-        thumb: '',
-        thumb_secret: '',
-        size: ''
-    },
-    video: {
-        type: 'video',
-        file_length: 0,
-        filename: '',
-        filetype: '',
-        length: 0,
-        secret: '',
-        width: 0,
-        height: 0,
-        url: '',
-        thumb: '',
-        thumb_secret: ''
-    },
-    audio: {
-        type: 'audio',
-        file_length: 0,
-        filename: '',
-        filetype: '',
-        length: 0,
-        secret: '',
-        width: 0,
-        height: 0,
-        url: '',
-        thumb: '',
-        thumb_secret: ''
-    },
-    custom: {
-        type: 'custom',
-        customEvent: '',
-        customExts: {}
+function getMsgTpl (type) {
+    const msgTpl = {
+        base: {
+            error: false,
+            errorCode: '',
+            errorText: '',
+            // if status is blank, it's treated as "sent" from server side
+            status: 'sending', // [sending, sent ,fail, read]
+            id: '',
+            // from - room id need it,should not be deleted
+            from: '',
+            to: '',
+            toJid: '',
+            time: '',
+            chatType: '', // chat / groupchat
+            body: {},
+            ext: {},
+            bySelf: false
+        },
+        txt: {
+            type: 'txt',
+            msg: ''
+        },
+        img: {
+            type: 'img',
+            file_length: 0,
+            filename: '',
+            filetype: '',
+            length: 0,
+            secret: '',
+            width: 0,
+            height: 0,
+            url: '',
+            thumb: '',
+            thumb_secret: ''
+        },
+        file: {
+            type: 'file',
+            file_length: 0,
+            filename: '',
+            filetype: '',
+            length: 0,
+            secret: '',
+            width: 0,
+            height: 0,
+            url: '',
+            thumb: '',
+            thumb_secret: '',
+            size: ''
+        },
+        video: {
+            type: 'video',
+            file_length: 0,
+            filename: '',
+            filetype: '',
+            length: 0,
+            secret: '',
+            width: 0,
+            height: 0,
+            url: '',
+            thumb: '',
+            thumb_secret: ''
+        },
+        audio: {
+            type: 'audio',
+            file_length: 0,
+            filename: '',
+            filetype: '',
+            length: 0,
+            secret: '',
+            width: 0,
+            height: 0,
+            url: '',
+            thumb: '',
+            thumb_secret: ''
+        },
+        custom: {
+            type: 'custom',
+            customEvent: '',
+            customExts: {}
+        }
     }
+    return type ? msgTpl[type] : msgTpl.base
 }
 
 export function formatLocalMessage(to, chatType, message = {}, messageType) {
+    console.log(message, 'message')
     const ext = message.ext || {}
-    const formatMsg = Object.assign(msgTpl.base, message)
-    const body = Object.assign(msgTpl[messageType], message)
+    const formatMsg = Object.assign(getMsgTpl(), message)
+    // let body = {}
+    console.log(getMsgTpl(messageType), 'msgTpl[messageType]')
+    const body = Object.assign(getMsgTpl(messageType), message)
     if (messageType === 'file' || messageType === 'img' || messageType === 'video') {
-        if (message.identity !== 'thirdEmoji') {
+        if (!message?.ext?.emoji_url) {
             body.size = message?.data.size
         }
     }
+    console.log(ext, body, 'formatLocalMessage')
     return {
         ...formatMsg,
         id: WebIM.conn.getUniqueId(),

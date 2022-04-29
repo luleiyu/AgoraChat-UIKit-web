@@ -50,27 +50,36 @@ const EaseApp = (props) => {
       if (!session.lastMessage) {
         dispatch(MessageActions.fetchMessage(sessionId, sessionType));
       }
-      WebIM.conn.getPresenceStatus({usernames: [sessionId]}).then(res => {
-        let extFlag = false
-        const data = res.result[0]
-        Object.values(data.status).forEach(val => {
-          if (Number(val) === 1) {
-            extFlag = true
-          }
+      // WebIM.conn.getPresenceStatus({usernames: [sessionId]}).then(res => {
+      //   let extFlag = false
+      //   const data = res.result[0]
+      //   Object.values(data.status).forEach(val => {
+      //     if (Number(val) === 1) {
+      //       extFlag = true
+      //     }
+      //   })
+      //   if (!extFlag) {
+      //     data.ext = 'Offline'
+      //   }
+      //   dispatch(
+      //     GlobalPropsActions.setGlobalProps({
+      //       to: sessionId,
+      //       chatType: sessionType,
+      //       presenceExt: {[data.uid]: {
+      //         ext: data.ext
+      //       }}
+      //     })
+      //   );
+      // });
+      dispatch(
+        GlobalPropsActions.setGlobalProps({
+          to: sessionId,
+          chatType: sessionType,
+          presenceExt: {[sessionId]: {
+            ext: 'Offline'
+          }}
         })
-        if (!extFlag) {
-          data.ext = 'Offline'
-        }
-        dispatch(
-          GlobalPropsActions.setGlobalProps({
-            to: sessionId,
-            chatType: sessionType,
-            presenceExt: {[data.uid]: {
-              ext: data.ext
-            }}
-          })
-        );
-      });
+      );
       dispatch(SessionActions.setCurrentSession(sessionId));
       dispatch(MessageActions.clearUnreadAsync(sessionType, sessionId));
     },
