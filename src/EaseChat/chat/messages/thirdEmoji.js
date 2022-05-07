@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "14px",
     background: (props) =>
       props.bySelf
-        ? "#7F91A8"
+        ? "#7F91A8" // "linear-gradient(124deg, #c913df 20%,#154DFE 90%)"
         : "#F2F2F2",
     color: (props) => (props.bySelf ? "#fff" : "#000"),
     border: "1px solid #fff",

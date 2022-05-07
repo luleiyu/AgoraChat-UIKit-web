@@ -77,7 +77,7 @@ function Recorder({ open, onClose }) {
 
     recording.get((rec,val) => {
       setRecorderObj(rec);
-      console.log('recrecrecrecrec', rec,val.getTracks())
+      console.log('recrecrecrecrec', rec)
       MediaStream = val
       if (rec) {
         let _interval = setInterval(() => {

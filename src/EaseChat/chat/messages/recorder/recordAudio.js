@@ -202,6 +202,7 @@ HZRecorder.get = function(callback, config){
                     let rec = new HZRecorder(suc, config)
                     callback(rec)
                 }).catch((error)=>{
+                    console.log(error, 'error')
                     switch(error.code || error.name){
                         case 'PERMISSION_DENIED':
                         case 'PermissionDeniedError':

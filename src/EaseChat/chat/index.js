@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Chat = (props) => {
   useEffect(() => {
-    if (props.appkey && props.username) { //  && props.agoraToken
+    if (props.appkey && props.username && props.agoraToken) { //  && props.agoraToken
       initIMSDK(props.appkey);
       createlistener(props);
       if (WebIM.conn.logOut) {
@@ -44,8 +44,8 @@ const Chat = (props) => {
     noLogin &&
       WebIM.conn.open({
         user: props.username,
-        // agoraToken: props.agoraToken,
-        pwd: props.password,
+        agoraToken: props.agoraToken,
+        // pwd: props.password,
         appKey: WebIM.config.appkey,
       });
   };

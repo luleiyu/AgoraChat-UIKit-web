@@ -107,7 +107,7 @@ function AudioOrVideoMessage({ message, showByselfAvatar }) {
       {showByselfAvatar && message.bySelf && <Avatar src={avatar}></Avatar>}
       <div className={classes.textBodyBox}>
         <span className={classes.userName}>{message.from}</span>
-        {message.type === "audio" ? (
+        {message.body.type === "audio" ? (
           <div className={classes.audioBox} onClick={play}>
             <AudioPlayer play={isPlaying} reverse={message.bySelf} />
             <span className={classes.duration}>

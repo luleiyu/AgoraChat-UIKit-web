@@ -149,8 +149,8 @@ export function formatLocalMessage(to, chatType, message = {}, messageType) {
 
 export function formatServerMessage(message = {}, messageType) {
     const ext = message.ext || {}
-    const formatMsg = Object.assign(msgTpl.base, message)
-    const body = Object.assign(msgTpl[messageType], message)
+    const formatMsg = Object.assign(getMsgTpl(), message)
+    const body = Object.assign(getMsgTpl(messageType), message)
     let chatType = message.chatType
     if (messageType === 'txt') {
         body.msg = message.msg;
