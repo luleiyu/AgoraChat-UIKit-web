@@ -301,11 +301,15 @@ const { Types, Creators } = createActions({
     },
 
     addAudioMessage: (message, bodyType) => {
+        let Accept = 'audio/mp3'
+        if (bodyType === 'video') {
+            Accept = 'audio/mp4'
+        }
         return (dispatch, getState) => {
             let options = {
                 url: message.url,
                 headers: {
-                    Accept: 'audio/mp3'
+                    Accept: Accept
                 },
                 onFileDownloadComplete: function (response) {
                     let objectUrl = WebIM.utils.parseDownloadResponse.call(WebIM.conn, response)

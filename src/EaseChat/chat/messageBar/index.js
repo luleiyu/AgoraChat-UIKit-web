@@ -157,15 +157,15 @@ const MessageBar = () => {
           style={{ borderRadius: chatType === "singleChat" ? "50%" : 'inherit'}}
         ></Avatar>
           {
-            chatType === "singleChat" ?
-            <div className={classes.imgBox}>
-              <img alt="" src={getUserOnlineStatus[presenceExt[to]?.ext] || customIcon} className={classes.imgStyle} />
-            </div>
-            : null
+            // chatType === "singleChat" ?
+            // <div className={classes.imgBox}>
+            //   <img alt="" src={getUserOnlineStatus[presenceExt[to]?.ext] || customIcon} className={classes.imgStyle} />
+            // </div>
+            // : null
           }
         {to}
         {
-          presenceExt[to]?.muteFlag ? <img className={classes.muteImgStyle} alt="" src={muteImg} /> : null
+          // presenceExt[to]?.muteFlag ? <img className={classes.muteImgStyle} alt="" src={muteImg} /> : null
         }
       </Box>
       <Box position="static">

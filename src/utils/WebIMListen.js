@@ -49,6 +49,13 @@ export default function createlistener(props) {
       store.dispatch(MessageActions.addAudioMessage(message, "audio"));
     },
 
+    onVideoMessage: (message) => {
+      console.log("onVideoMessage", message);
+      const { chatType, from, to } = message;
+      const sessionId = chatType === "singleChat" ? from : to;
+      store.dispatch(MessageActions.addAudioMessage(message, "video"));
+    },
+
     onRecallMessage: (message) => {
       // When log in, have received the Recall message before get Message from db. so retract after 2 seconds
       if (!uikit_store.getState().message.byId[message.mid]) {

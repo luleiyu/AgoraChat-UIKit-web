@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   textBodyBox: {
     display: "flex",
     flexDirection: (props) => (props.bySelf ? "inherit" : "column"),
-    maxWidth: "65%",
+    // maxWidth: "65%",
     alignItems: (props) => (props.bySelf ? "inherit" : "unset"),
   },
   textBody: {
