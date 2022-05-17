@@ -21,8 +21,6 @@ import GlobalPropsActions from "../../redux/globalProps"
 import i18next from "i18next";
 
 import muteImg from '../../common/images/gray@2x.png'
-import deleteImg from '../../common/images/delete.png'
-import './index.css'
 
 const useStyles = makeStyles((theme) => ({
       paper:{
@@ -44,9 +42,6 @@ const useStyles = makeStyles((theme) => ({
         padding: "0 14px",
         borderRadius:'20px',
         '& .Mui-selected':{
-          backgroundColor: 'rgba(255, 255, 255, 1) !important'
-        },
-        '& .MuiListItem-root.Mui-selected, .MuiListItem-root.Mui-selected:hover': {
           backgroundColor: 'rgba(255, 255, 255, 1) !important'
         }
       },
@@ -159,11 +154,6 @@ function SessionItem(props) {
             {menuList && menuList.map((option, index) => {
               return (
                 <MenuItem onClick={(e)=>onClickMenuItem(e,index)} key={index}>
-                  <Avatar
-                    style={{ borderRadius: `${session.sessionType}` === "singleChat" ? "50%" : 'inherit'}}
-                    alt={`${session.name || session.sessionId}`}
-                    src={deleteImg}
-                  />
                   <Typography variant="inherit" noWrap>
                     {i18next.t(option.name)}
                   </Typography>
@@ -187,7 +177,7 @@ function SessionItem(props) {
         <Box className={classes.itemBox}>
           <ListItemAvatar>
             <Avatar
-              style={{ borderRadius: '50%'}}
+              style={{ borderRadius: `${session.sessionType}` === "singleChat" ? "50%" : 'inherit'}}
               alt={`${session.name || session.sessionId}`}
               src={avatarSrc}
             />

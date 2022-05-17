@@ -2,7 +2,7 @@ import React, { memo, useEffect, useRef, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Avatar, Icon } from "@material-ui/core";
 import { renderTime } from "../../../utils/index";
-import avatar from "../../../common/images/avatar_another_style.png";
+import avatar from "../../../common/icons/avatar1.png";
 import AudioPlayer from "./audioPlayer/audioPlayer";
 import { EaseChatContext } from "../index";
 const useStyles = makeStyles((theme) => ({
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     height: "34px",
     background: (props) =>
       props.bySelf
-        ? "#7F91A8"
+        ? "linear-gradient(124deg, #c913df 20%,#154DFE 90%)"
         : "rgb(242, 242, 242)",
     borderRadius: (props) =>
       props.bySelf ? "16px 16px 4px" : "16px 16px 16px 4px",

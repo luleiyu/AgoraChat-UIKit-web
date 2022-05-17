@@ -1,7 +1,7 @@
 import React, { memo, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Avatar, Menu, MenuItem } from "@material-ui/core";
-import avatar from "../../../common/images/avatar_another_style.png";
+import avatar from "../../../common/icons/avatar1.png";
 import i18next from "i18next";
 import { renderTime } from "../../../utils";
 import { EaseChatContext } from "../index";

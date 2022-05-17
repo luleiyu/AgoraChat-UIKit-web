@@ -1,6 +1,6 @@
 import React, { memo, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/styles";
-import avatar from "../../../common/images/avatar_another_style.png";
+import avatar from "../../../common/icons/avatar1.png";
 // import clsx from 'clsx';
 import i18next from "i18next";
 import { IconButton, Icon, Menu, MenuItem } from "@material-ui/core";

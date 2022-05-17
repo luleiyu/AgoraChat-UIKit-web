@@ -174,7 +174,7 @@ export default function SessionList(props) {
             let findIndex =  _.find(usersInfoData, { username: session.sessionId }) || ''
             avatarSrc = userAvatars[findIndex.userAvatar] || avatarIcon1
           }else if (session.sessionType === "groupChat") {
-            avatarSrc = chatRoomIcon;
+            avatarSrc = groupIcon;
           } else if (session.sessionType === "chatRoom") {
             avatarSrc = chatRoomIcon;
           } else if (session.sessionType === "notice") {
