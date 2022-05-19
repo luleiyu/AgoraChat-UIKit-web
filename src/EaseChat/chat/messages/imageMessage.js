@@ -5,6 +5,9 @@ import avatar from "../../../common/icons/avatar1.png";
 import i18next from "i18next";
 import { renderTime } from "../../../utils";
 import { EaseChatContext } from "../index";
+import offlineImg from '../../../common/images/Offline.png'
+import onlineIcon from '../../../common/images/Online.png'
+
 const useStyles = makeStyles((theme) => ({
   pulldownListItem: {
     padding: "10px 0",
@@ -30,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: (props) => (props.bySelf ? "inherit" : "column"),
     maxWidth: "65%",
     alignItems: (props) => (props.bySelf ? "inherit" : "unset"),
+		position: 'relative',
   },
   imgBox: {
     marginLeft: "10px",
@@ -48,6 +52,14 @@ const useStyles = makeStyles((theme) => ({
     top: "-18px",
     width: "100%",
   },
+	onLineImg: {
+    width: '15px',
+    height: '15px',
+		position: 'absolute',
+    zIndex: 1,
+		top: '16px',
+    left: '5px',
+  }
 }));
 const initialState = {
   mouseX: null,
@@ -72,6 +84,12 @@ function ImgMessage({ message, onRecallMessage, showByselfAvatar }) {
       mouseY: event.clientY - 4,
     });
   };
+	let onLineImg = ''
+  if (message.body.onlineState === 1) {
+    onLineImg = onlineIcon
+  } else if (message.body.onlineState === 0) {
+    onLineImg = offlineImg
+  }
   return (
     <li className={classes.pulldownListItem}>
       {!message.bySelf && (
@@ -82,6 +100,11 @@ function ImgMessage({ message, onRecallMessage, showByselfAvatar }) {
       )}
       {showByselfAvatar && message.bySelf && <Avatar src={avatar}></Avatar>}
       <div className={classes.textBodyBox}>
+				{
+          !message.bySelf && (
+            onLineImg && <img className={classes.onLineImg} alt="" src={onLineImg} />
+          )
+        }
         <span className={classes.userName}>{message.from}</span>
         <div className={classes.imgBox} onContextMenu={handleClick}>
           <img src={message.url} alt="img message"></img>

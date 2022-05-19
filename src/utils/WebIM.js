@@ -25,6 +25,8 @@ export const initIMSDK = (appkey) => {
     // url: 'https://msync-api-a1-test.easemob.com/ws', // 设置为私有云的websocket server url
     // apiUrl: 'https://a1-test.easemob.com', // 设置为私有云的rest server url 
     // a1-hsb.easemob.com
+    // url: 'https://im-api-v2-hsb.easemob.com/ws',
+    // apiUrl: 'https://a1-hsb.easemob.com'
   };
 
   WebIM.conn = new websdk.connection(options);

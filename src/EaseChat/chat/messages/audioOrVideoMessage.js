@@ -5,6 +5,9 @@ import { renderTime } from "../../../utils/index";
 import avatar from "../../../common/icons/avatar1.png";
 import AudioPlayer from "./audioPlayer/audioPlayer";
 import { EaseChatContext } from "../index";
+import offlineImg from '../../../common/images/Offline.png'
+import onlineIcon from '../../../common/images/Online.png'
+
 const useStyles = makeStyles((theme) => ({
   pulldownListItem: {
     padding: "10px 0",
@@ -29,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: (props) => (props.bySelf ? "inherit" : "column"),
     maxWidth: "65%",
     alignItems: (props) => (props.bySelf ? "inherit" : "unset"),
+    position: 'relative',
   },
 
   audioBox: {
@@ -74,6 +78,14 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     height: "34px",
   },
+  onLineImg: {
+    width: '15px',
+    height: '15px',
+    position: 'absolute',
+    zIndex: 1,
+    top: '20px',
+    left: '0px',
+  }
 }));
 
 function AudioOrVideoMessage({ message, showByselfAvatar }) {
@@ -95,7 +107,12 @@ function AudioOrVideoMessage({ message, showByselfAvatar }) {
       setIsPlaying(false);
     }, time + 500);
   };
-
+  let onLineImg = ''
+  if (message.body.onlineState === 1) {
+    onLineImg = onlineIcon
+  } else if (message.body.onlineState === 0) {
+    onLineImg = offlineImg
+  }
   return (
     <li className={classes.pulldownListItem}>
       {!message.bySelf && (
@@ -106,6 +123,11 @@ function AudioOrVideoMessage({ message, showByselfAvatar }) {
       )}
       {showByselfAvatar && message.bySelf && <Avatar src={avatar}></Avatar>}
       <div className={classes.textBodyBox}>
+        {
+          !message.bySelf && (
+            onLineImg && <img className={classes.onLineImg} alt="" src={onLineImg} />
+          )
+        }
         <span className={classes.userName}>{message.from}</span>
         {message.body.type === "audio" ? (
           <div className={classes.audioBox} onClick={play}>

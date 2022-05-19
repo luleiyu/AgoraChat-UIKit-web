@@ -10,6 +10,9 @@ import MessageStatus from "./messageStatus";
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 
 import { EaseChatContext } from "../index";
+import offlineImg from '../../../common/images/Offline.png'
+import onlineIcon from '../../../common/images/Online.png'
+
 const useStyles = makeStyles((theme) => ({
   pulldownListItem: {
     display: "flex",
@@ -35,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: (props) => (props.bySelf ? "inherit" : "column"),
     // maxWidth: "65%",
     alignItems: (props) => (props.bySelf ? "inherit" : "unset"),
+    position: 'relative',
   },
   textBody: {
     // display: "flex",
@@ -76,6 +80,14 @@ const useStyles = makeStyles((theme) => ({
   },
   gifStyle: {
     maxWidth: '400px'
+  },
+  onLineImg: {
+    width: '15px',
+    height: '15px',
+    position: 'absolute',
+    zIndex: 1,
+    top: '20px',
+    left: '7px',
   }
 }));
 const initialState = {
@@ -86,8 +98,7 @@ function ThirdEmoji({ message, onRecallMessage, showByselfAvatar }) {
   let easeChatProps = useContext(EaseChatContext);
   const { onAvatarChange } = easeChatProps;
   const classes = useStyles({
-    bySelf: message.bySelf,
-    chatType: message.chatType,
+    bySelf: message.bySelf
   });
   const [menuState, setMenuState] = useState(initialState);
   const [copyMsgVal,setCopyMsgVal] = useState('');
@@ -115,7 +126,12 @@ function ThirdEmoji({ message, onRecallMessage, showByselfAvatar }) {
     setCopyMsgVal(message.msg);  
     handleClose() 
   }
-
+  let onLineImg = ''
+  if (message.body.onlineState === 1) {
+    onLineImg = onlineIcon
+  } else if (message.body.onlineState === 0) {
+    onLineImg = offlineImg
+  }
   return (
     <li className={classes.pulldownListItem}>
       <div>
@@ -131,6 +147,11 @@ function ThirdEmoji({ message, onRecallMessage, showByselfAvatar }) {
         )}
       </div>
       <div className={classes.textBodyBox}>
+        {
+          !message.bySelf && (
+            onLineImg && <img className={classes.onLineImg} alt="" src={onLineImg} />
+          )
+        }
         <span className={classes.userName}>{message.from}</span>
         <div className={classes.textBody} onContextMenu={handleClick}>
           {

@@ -6,6 +6,8 @@ import i18next from "i18next";
 import { IconButton, Icon, Menu, MenuItem } from "@material-ui/core";
 import { renderTime } from "../../../utils";
 import { EaseChatContext } from "../index";
+import offlineImg from '../../../common/images/Offline.png'
+import onlineIcon from '../../../common/images/Online.png'
 
 const useStyles = makeStyles((theme) => ({
   pulldownListItem: {
@@ -32,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: (props) => (props.bySelf ? "inherit" : "column"),
     maxWidth: "65%",
     alignItems: (props) => (props.bySelf ? "inherit" : "unset"),
+		position: 'relative',
   },
   fileCard: {
     width: "252px",
@@ -93,6 +96,14 @@ const useStyles = makeStyles((theme) => ({
     width: "40px",
     borderRadius: "50%",
   },
+	onLineImg: {
+    width: '15px',
+    height: '15px',
+		position: 'absolute',
+    zIndex: 1,
+		top: '20px',
+    left: '15px',
+  }
 }));
 const initialState = {
   mouseX: null,
@@ -117,7 +128,12 @@ function FileMessage({ message, onRecallMessage, showByselfAvatar }) {
       mouseY: event.clientY - 4,
     });
   };
-
+	let onLineImg = ''
+  if (message.body.onlineState === 1) {
+    onLineImg = onlineIcon
+  } else if (message.body.onlineState === 0) {
+    onLineImg = offlineImg
+  }
   return (
     <li className={classes.pulldownListItem}>
       {!message.bySelf && (
@@ -131,6 +147,11 @@ function FileMessage({ message, onRecallMessage, showByselfAvatar }) {
         <img className={classes.avatarStyle} src={avatar}></img>
       )}
       <div className={classes.textBodyBox}>
+				{
+          !message.bySelf && (
+            onLineImg && <img className={classes.onLineImg} alt="" src={onLineImg} />
+          )
+        }
         <span className={classes.userName}>{message.from}</span>
         <div className={classes.fileCard} onContextMenu={handleClick}>
           <div className={classes.fileIcon}>
