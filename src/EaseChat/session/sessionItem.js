@@ -182,7 +182,7 @@ function SessionItem(props) {
         key={session.sessionId}
         selected={currentSessionIndex === index}
         onClick={(event) => handleListItemClick(event, index, session)}
-        className={classes.listItem}
+        className={`${classes.listItem}`}
         button
         onMouseOver={()=>setIsShowMoreVertStyle(true)} 
         onMouseLeave={()=>{setIsShowMoreVertStyle(false);setSessionEl(null)}}

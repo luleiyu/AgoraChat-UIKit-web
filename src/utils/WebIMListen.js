@@ -10,8 +10,9 @@ import uikit_store from "../redux/index";
 export default function createlistener(props) {
   WebIM.conn.addEventHandler('EaseChat',{
     onConnected: (msg) => {
-        // init DB
-        AppDB.init(WebIM.conn.context.userId);
+      // init DB
+      AppDB.init(WebIM.conn.context.userId);
+      // store.dispatch(SessionActions.onGetChatroomUserList())
       // get session list
       store.dispatch(SessionActions.getSessionList(WebIM.conn.context.userId));
       const options = {

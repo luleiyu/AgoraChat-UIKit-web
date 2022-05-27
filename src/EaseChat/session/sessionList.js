@@ -10,7 +10,7 @@ import _ from 'lodash'
 import SessionItem from './sessionItem';
 
 import groupIcon from "../../common/images/groupAvatar.png";
-import chatRoomIcon from "../../common/images/chatroom@2x.png";
+import chatRoomIcon from "../../common/images/group_another_style.png";
 import noticeIcon from "../../common/images/notice@2x.png";
 import avatarIcon1 from '../../common/images/avatar1.png'
 import avatarIcon2 from '../../common/images/avatar2.png'
