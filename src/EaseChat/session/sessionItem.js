@@ -22,6 +22,7 @@ import i18next from "i18next";
 
 import muteImg from '../../common/images/gray@2x.png'
 import deleteIcon from '../../common/icons/delete@2x.png'
+import { emoji } from "../../common/emoji";
 
 const useStyles = makeStyles((theme) => ({
       paper:{
@@ -82,12 +83,13 @@ const useStyles = makeStyles((theme) => ({
       },
       itemMsg: {
         display: "inline-block",
-        height: "20px",
+        height: "24px",
         overflow: "hidden",
         color: "#666",
         width: "calc(100% - 18px)",
         fontSize: "14px",
-        wordBreak: 'break-all'
+        wordBreak: 'break-all',
+        lineHeight: '24px',
       },
       unreadNum: {
         color: "#fff",
@@ -190,7 +192,41 @@ function SessionItem(props) {
           </Menu>
         );
       };
-
+    const renderTxt = (txt) => {
+      if (txt === undefined) {
+        return [];
+      }
+      let rnTxt = [];
+      let match = null;
+      const regex = /(\[.*?\])/g;
+      let start = 0;
+      let index = 0;
+      while ((match = regex.exec(txt))) {
+        index = match.index;
+        if (index > start) {
+          rnTxt.push(txt.substring(start, index));
+        }
+        if (match[1] in emoji.map) {
+          const v = emoji.map[match[1]];
+          rnTxt.push(
+            <img
+              key={v + Math.floor(Math.random() * 99 + 1)}
+              alt={v}
+              src={require(`../../common/reactions/${v}`).default}
+              width={20}
+              height={20}
+              style={{verticalAlign:'middle'}}
+            />
+          );
+        } else {
+          rnTxt.push(match[1]);
+        }
+        start = index + match[1].length;
+      }
+      rnTxt.push(txt.substring(start, txt.length));
+  
+      return rnTxt;
+    };
     return (
         <ListItem
         key={session.sessionId}
@@ -226,7 +262,7 @@ function SessionItem(props) {
 
             <Typography className={classes.itemMsgBox}>
               <span className={classes.itemMsg}>
-                {session?.lastMessage?.body?.msg}
+                {renderTxt(session?.lastMessage?.body?.msg)}
               </span>
 
               {isShowUnread && presenceExt && !presenceExt[session.sessionId]?.muteFlag &&

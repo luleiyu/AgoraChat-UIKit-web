@@ -15,7 +15,7 @@ import {
   TextareaAutosize,
   Menu,
 } from "@material-ui/core";
-import Emoji from "./toolbars/emoji";
+import EmojiComponent from "./toolbars/emoji";
 import { useDispatch, useSelector } from "react-redux";
 import MessageActions from "../../redux/message";
 import PropTypes from "prop-types";
@@ -27,7 +27,8 @@ import Recorder from "./messages/recorder";
 import icon_emoji from "../../common/icons/emoji@2x.png";
 import icon_yuyin from "../../common/icons/voice@2x.png";
 import attachment from "../../common/icons/attachment@2x.png";
-import { message } from '../common/alert' 
+import { message } from '../common/alert'
+import { emoji } from "../../common/emoji";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -86,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '6px 0',
   }
 }));
+const regex = /(\[.*?\])/g;
 
 function SendBox(props) {
   let easeChatProps = useContext(EaseChatContext);
@@ -111,20 +113,77 @@ function SendBox(props) {
   const handleEmojiClose = () => {
     setEmojiVisible(null);
   };
-  const handleEmojiSelected = (emoji) => {
-    if (!emoji) return;
+  const handleEmojiSelected = (val) => {
+    if (!val) return;
+    console.log(val, 'val', emoji.map[val])
     setEmojiVisible(null);
-    setInputValue((value) => value + emoji);
+    setInputValue((value) => value + val);
+    const inputText = inputValue + val
+
+    const TextString = renderTxt(inputText)
+    console.log(TextString, 'TextString')
+    // inputRef.current.textContent = inputText
+    inputRef.current.innerHTML = TextString
     setTimeout(() => {
-      let el = inputRef.current;
-      el.focus();
-      el.selectionStart = inputValueRef.current.length;
-      el.selectionEnd = inputValueRef.current.length;
+      // console.log(inputValueRef, inputRef)
+      // let el = inputRef.current;
+      // const s = window.getSelection();
+      // const r = document.createRange();
+      // let idx = 1
+      // if (el.childNodes[0].nodeName === '#text') {
+      //   idx = el.childElementCount + 1
+      // } else {
+      //   idx = el.childElementCount
+      // }
+      // console.log(s, r)
+      // r.setStart(el, idx);
+      // r.collapse(true)
+      // s.removeAllRanges();
+      // s.addRange(r);
+      // el.focus();
+      // el.selectionStart = inputValueRef.current.length;
+      // el.selectionEnd = inputValueRef.current.length;
     }, 0);
   };
-
+  const inserCurosrHtml = (t, e) => {
+    var i = document.querySelector(".chat-input");
+    i.innerText.length;
+    if ("getSelection" in window) {
+      var s = window.getSelection();
+      if (s && 1 === s.rangeCount) {
+        i.focus();
+        var n = s.getRangeAt(0),
+          a = new Image;
+        a.src = t, a.setAttribute("data-key", e), a.draggable = !1, a.className = "emoj-insert", a.setAttribute("title", e.replace("[", "").replace("]", "")), n.deleteContents(), n.insertNode(a), n.collapse(!1), s.removeAllRanges(), s.addRange(n)
+      }
+    } else if ("selection" in document) {
+      i.focus(), (n = document.selection.createRange()).pasteHTML('<img class="emoj-insert" draggable="false" data-key="' + e + '" title="' + e.replace("[", "").replace("]", "") + '" src="' + t + '">'), i.focus()
+    }
+  }
+  const handelrDivClick = e => {
+    console.log(e, 'click', inputRef)
+    let idx = 'str'
+    inputRef.current.childNodes.forEach(((item, index) => {
+      if (e.target.tagName === 'IMG' && item.alt === e.target.alt) {
+        console.log(index)
+        idx = index
+      }
+    }))
+    if (Number(idx).toString() !== 'NaN') {
+      let el = inputRef.current;
+      const s = window.getSelection();
+      const r = document.createRange();
+      console.log(s, r)
+      r.setStart(el, idx);
+      r.collapse(true)
+      s.removeAllRanges();
+      s.addRange(r);
+    }
+  }
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    console.log(e, 'input')
+    // setInputValue((value) => value + e.target.textContent);
+    setInputValue(e.target.textContent);
   };
   const isCreatingThread = useSelector((state) => state.thread?.isCreatingThread);
   const currentThreadInfo = useSelector((state) => state.thread?.currentThreadInfo);
@@ -172,6 +231,7 @@ function SendBox(props) {
       );
       setInputValue("");
       inputRef.current.focus();
+      inputRef.current.textContent = ''
     })
   }, [inputValue, to, chatType, dispatch,currentThreadInfo,props ]);
 
@@ -252,6 +312,43 @@ function SendBox(props) {
     handlefocus(v)
     setSessionEl(null);
   };
+
+  const renderTxt = (txt) => {
+		if (txt === undefined) {
+			return [];
+		}
+		let rnTxt = [];
+		let match = null;
+		const regex = /(\[.*?\])/g;
+		let start = 0;
+		let index = 0;
+		while ((match = regex.exec(txt))) {
+			index = match.index;
+			if (index > start) {
+				rnTxt.push(txt.substring(start, index));
+			}
+			if (match[1] in emoji.map) {
+				const v = emoji.map[match[1]];
+				rnTxt.push(
+					`<img
+            title=${match[1]}
+						key=${v + Math.floor(Math.random() * 99 + 1) + new Date().getTime().toString()}
+						alt=${v + Math.floor(Math.random() * 99 + 1)}
+						src=${require(`../../common/reactions/${v}`).default}
+						width=20
+						height=20
+						style="vertical-align: middle"
+					/>`
+				);
+			} else {
+				rnTxt.push(match[1]);
+			}
+			start = index + match[1].length;
+		}
+		rnTxt.push(txt.substring(start, txt.length));
+
+		return rnTxt.join('');
+	};
 
   /*------------ ui-menu ----------*/
   const renderMenu = () => {
@@ -337,7 +434,8 @@ function SendBox(props) {
 
   const renderTextarea = () => {
     return (
-      <div className={classes.textareaBox}>
+      <>
+      {/* <div className={classes.textareaBox}>
         <TextareaAutosize
           placeholder="Say Something"
           className={classes.input}
@@ -347,8 +445,11 @@ function SendBox(props) {
           onChange={handleInputChange}
           ref={inputRef}
         ></TextareaAutosize>
+      </div> */}
+      <div contenteditable="true" className={classes.textareaBox + ' ' + 'chat-input'} ref={inputRef} onClick={handelrDivClick} onInput={handleInputChange}>
+        {/* {renderTxt(inputValue)} */}
       </div>
-      
+      </>
     );
   };
 
@@ -358,11 +459,11 @@ function SendBox(props) {
         <IconButton ref={emojiRef} className={classes.iconbtnStyle} onClick={handleClickEmoji}>
           <img alt="" className={classes.iconStyle} src={icon_emoji} />
         </IconButton>
-        <Emoji
+        <EmojiComponent
           anchorEl={emojiVisible}
           onSelected={handleEmojiSelected}
           onClose={handleEmojiClose}
-        ></Emoji>
+        ></EmojiComponent>
       </>
     );
   };
